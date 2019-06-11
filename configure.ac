@@ -22,7 +22,7 @@ AC_CONFIG_HEADER([config.h])
 AM_INIT_AUTOMAKE
 LT_INIT
 
-CXXFLAGS="-O2 -g -Wall"
+CXXFLAGS="-O0 -g -Wall"
 
 # Checks for programs.
 AC_PROG_CXX

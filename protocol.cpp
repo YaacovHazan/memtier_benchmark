@@ -572,8 +572,13 @@ bool redis_protocol::format_arbitrary_command(arbitrary_command &cmd) {
         current_arg->type = const_type;
 
         // check arg type
-        if (current_arg->data.find(KEY_PLACEHOLDER) != std::string::npos) {
-            if (current_arg->data.length() != strlen(KEY_PLACEHOLDER)) {
+        size_t pos = current_arg->data.find(KEY_PLACEHOLDER);
+        if (pos != std::string::npos) {
+            // replace the KEY_PLACEHOLDER with '%.*s'
+            current_arg->data.replace(pos, strlen(KEY_PLACEHOLDER), "%.*s");
+
+            // verify that no more than one KEY_PLACEHOLDER exist in the same argument
+            if (current_arg->data.find(KEY_PLACEHOLDER) != std::string::npos) {
                 benchmark_error_log("error: key placeholder can't combined with other data\n");
                 return false;
             }
